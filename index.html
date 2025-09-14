@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Task Manager</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">Task Manager</h1>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </header>
+
+        <!-- Task Input Form -->
+        <section class="task-form-section">
+            <form class="task-form" id="taskForm">
+                <div class="form-group">
+                    <input 
+                        type="text" 
+                        id="taskTitle" 
+                        class="form-input" 
+                        placeholder="Task title" 
+                        required
+                        maxlength="100"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <textarea 
+                        id="taskDescription" 
+                        class="form-input form-textarea" 
+                        placeholder="Description (optional)"
+                        rows="2"
+                        maxlength="500"
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input 
+                            type="date" 
+                            id="taskDueDate" 
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <select id="taskCategory" class="form-input">
+                            <option value="">No category</option>
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="health">Health</option>
+                            <option value="learning">Learning</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span class="btn-text">Add Task</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Filters and Search -->
+        <section class="controls-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search tasks..."
+                >
+            </div>
+
+            <div class="filter-container">
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">All tasks</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="overdue">Overdue</option>
+                </select>
+
+                <select id="categoryFilter" class="filter-select">
+                    <option value="all">All categories</option>
+                    <option value="work">Work</option>
+                    <option value="personal">Personal</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="health">Health</option>
+                    <option value="learning">Learning</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Task Stats -->
+        <section class="stats-section">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="pendingTasks">0</span>
+                    <span class="stat-label">Pending</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Task List -->
+        <main class="tasks-section">
+            <div class="tasks-container">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">📝</div>
+                    <h3 class="empty-title">No tasks yet</h3>
+                    <p class="empty-message">Create your first task to get started!</p>
+                </div>
+
+                <ul class="task-list" id="taskList">
+                    <!-- Tasks will be dynamically inserted here -->
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Task</h3>
+                <button class="modal-close" id="closeModal" aria-label="Close modal">&times;</button>
+            </div>
+
+            <form class="modal-form" id="editTaskForm">
+                <div class="form-group">
+                    <label for="editTaskTitle" class="form-label">Title</label>
+                    <input 
+                        type="text" 
+                        id="editTaskTitle" 
+                        class="form-input" 
+                        required
+                        maxlength="100"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="editTaskDescription" class="form-label">Description</label>
+                    <textarea 
+                        id="editTaskDescription" 
+                        class="form-input form-textarea" 
+                        rows="3"
+                        maxlength="500"
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTaskDueDate" class="form-label">Due Date</label>
+                        <input 
+                            type="date" 
+                            id="editTaskDueDate" 
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editTaskCategory" class="form-label">Category</label>
+                        <select id="editTaskCategory" class="form-input">
+                            <option value="">No category</option>
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="health">Health</option>
+                            <option value="learning">Learning</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
